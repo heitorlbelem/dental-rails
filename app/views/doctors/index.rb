@@ -7,30 +7,27 @@ module Views
 
       def view_template
         div(class: "flex flex-col gap-8 w-full") do
-          h1(class: "font-bold text-4xl") { "Doctors" }
+          Heading(level: 1)  { "Dentistas" }
 
-          Table(class: "w-full") do
+          Table do
             TableHeader do
               TableRow do
-                TableHead { "Name" }
-                TableHead(class: "text-right") { "Expertise" }
+                TableHead { "Nome" }
+                TableHead { "Expertise" }
               end
             end
             TableBody do
               @doctors.each do |doctor|
                 TableRow do
-                  TableCell { doctor.name }
-                  TableCell(class: "text-right") { doctor.expertise }
+                  TableCell { Link(href: doctor_path(doctor)) { doctor.name }  }
+                  TableCell { doctor.expertise }
                 end
               end
             end
           end
 
-          Link(
-            href: new_doctor_path,
-            class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium"
-          ) do
-            "New doctor"
+          Link(href: new_doctor_path, variant: :primary, icon: true) do
+            "+"
           end
         end
       end
