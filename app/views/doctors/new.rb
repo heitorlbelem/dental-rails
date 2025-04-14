@@ -6,13 +6,7 @@ module Views
       end
 
       def view_template
-        div(class: "w-full") do
-          Heading(level: 1)  { "Cadastrar dentista" }
-
-          render Views::Doctors::Form.new(doctor: @doctor)
-
-          Link(href: doctors_path) { "Voltar" }
-        end
+        render Views::Doctors::Form.new(doctor: @doctor, title: "Novo dentista")
       end
     end
   end

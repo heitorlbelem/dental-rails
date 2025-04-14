@@ -1,5 +1,10 @@
 ---
 pt-BR:
+  models:
+    doctor:
+      attributes:
+        name: Nome
+        expertise: Especialidade
   activerecord:
     errors:
       messages:

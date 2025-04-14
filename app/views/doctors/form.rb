@@ -3,32 +3,46 @@ module Views
     class Form < Components::Base
       include Phlex::Rails::Helpers::FormWith
 
-      def initialize(doctor:)
+      def initialize(doctor:, title:)
         @doctor = doctor
+        @title = title
         @persisted = doctor.persisted?
       end
 
       def view_template
-        Form(action: @persisted ? doctor_path(@doctor) : doctors_path, method: @persisted ? :patch : :post) do
-          FormField do
-            FormFieldLabel { "Nome" }
-            Input(name: "doctor[name]", value: @doctor&.name)
-            if @doctor.errors[:name].any?
-              FormFieldError {  @doctor.errors[:name].join(", ") }
+        Dialog(open: true) do
+          DialogContent do
+            DialogHeader do
+              DialogTitle { @title }
+            end
+            DialogMiddle do
+              Form(action: form_url, method: @persisted ? :patch : :post) do
+                FormFieldFor(object: @doctor, field: :name)
+                FormFieldFor(object: @doctor, field: :expertise)
+                Button(type: "submit") do
+                  @persisted ? "Atualizar" : "Criar"
+                end
+              end
             end
           end
+        end
+      end
 
-          FormField do
-            FormFieldLabel { "Expertise" }
-            Input(name: "doctor[expertise]", value: @doctor&.expertise)
-            if @doctor.errors[:expertise].any?
-              FormFieldError {  @doctor.errors[:expertise].join(", ") }
-            end
-          end
+      private
 
-          Button(type: "submit", variant: :primary) do
-            @persisted ? "Atualizar" : "Criar"
-          end
+      def form_url
+        if @persisted
+          doctor_path(@doctor)
+        else
+          doctors_path
+        end
+      end
+
+      def form_method
+        if @persisted
+          :put
+        else
+          :post
         end
       end
     end
