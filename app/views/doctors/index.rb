@@ -4,23 +4,20 @@ module Views
       include Phlex::Rails::Helpers::LinkTo
       include Phlex::Rails::Helpers::ButtonTo
 
-      def initialize(doctors:, notice: nil)
-        @notice = notice
+      def initialize(doctors:, flash: nil)
         @doctors = doctors
+        @flash = flash
       end
 
       def view_template
-        div(class: "flex flex-col gap-8 w-full") do
-          Heading(level: 1)  { "Dentistas" }
+        div(class: "w-full gap-4 flex flex-col") do
+          AlertContainer(flash: @flash)
 
-          if @notice.present?
-            Alert(variant: :warning) do
-              AlertTitle { @notice }
+          div(class: "flex justify-between items-center") do
+            Heading(level: 1)  { "Dentistas" }
+            Link(href: new_doctor_path, variant: :primary, data: { turbo_frame: "remote_modal" }) do
+              "Novo dentista"
             end
-          end
-
-          Link(href: new_doctor_path, variant: :primary, data: { turbo_frame: "remote_modal" }) do
-            "Novo dentista"
           end
 
           Table do
@@ -28,19 +25,33 @@ module Views
               TableRow do
                 TableHead { "Nome" }
                 TableHead { "Expertise" }
-                TableHead {  }
+                TableHead(class: "text-right") {  }
               end
             end
             TableBody do
               @doctors.each do |doctor|
                 TableRow do
-                  TableCell { Link(href: doctor_path(doctor)) { doctor.name }  }
+                  TableCell { Link(href: doctor_path(doctor), class: 'px-0') { doctor.name }  }
                   TableCell { doctor.expertise }
-                  TableCell do
+                  TableCell(class: "text-right") do
                     Link(href: edit_doctor_path(doctor), variant: :primary, data: { turbo_frame: "remote_modal" }) do
                       "Editar"
                     end
-                    button_to("delete", @recipe, method: :delete, class: "whitespace-nowrap inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-primary-foreground shadow hover:bg-primary/90 px-4 py-2 h-9 text-sm")
+                    AlertDialog do
+                      AlertDialogTrigger do
+                        Button(variant: :secondary) { "Excluir" }
+                      end
+                      AlertDialogContent do
+                        AlertDialogHeader do
+                          AlertDialogTitle { "Are you absolutely sure?" }
+                          AlertDialogDescription { "This action cannot be undone. This will permanently delete your account and remove your data from our servers." }
+                        end
+                        AlertDialogFooter do
+                          AlertDialogCancel { "Cancel" }
+                          AlertDialogAction { "Continue" } # Will probably be a link to a controller action (e.g. delete account)
+                        end
+                      end
+                    end
                   end
                 end
               end

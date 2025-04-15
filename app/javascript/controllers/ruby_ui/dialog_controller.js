@@ -11,7 +11,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log(this.openValue)
     if (this.openValue) {
       this.open()
     }

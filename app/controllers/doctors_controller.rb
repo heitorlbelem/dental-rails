@@ -3,7 +3,7 @@ class DoctorsController < ApplicationController
   before_action :set_doctor, only: %i[ show edit update destroy ]
 
   def index
-    render Views::Doctors::Index.new(doctors: Doctor.all, notice: notice)
+    render Views::Doctors::Index.new(doctors: Doctor.all, flash: flash)
   end
 
   def show
@@ -11,8 +11,7 @@ class DoctorsController < ApplicationController
   end
 
   def new
-    @doctor = Doctor.new
-    render Views::Doctors::New.new(doctor: @doctor)
+    render Views::Doctors::New.new(doctor: Doctor.new)
   end
 
   def edit
@@ -23,7 +22,7 @@ class DoctorsController < ApplicationController
     @doctor = Doctor.new(doctor_params)
 
     if @doctor.save
-      redirect_to doctors_path, notice: "Teste"
+      redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.created") }
     else
       render Views::Doctors::New.new(doctor: @doctor), status: :unprocessable_entity
     end
@@ -31,7 +30,7 @@ class DoctorsController < ApplicationController
 
   def update
     if @doctor.update(doctor_params)
-      redirect_to doctors_path, notice: "Dentista atualizado"
+      redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.updated") }
     else
       render Views::Doctors::Edit.new(doctor: @doctor), status: :unprocessable_entity
     end
@@ -40,7 +39,7 @@ class DoctorsController < ApplicationController
   def destroy
     @doctor.destroy!
 
-    redirect_to doctors_path, status: :see_other, notice: "Dentista excluído com sucesso"
+    redirect_to doctors_path, flash: { destructive: I18n.t("models.doctor.messages.destroyed") }
   end
 
   private

@@ -2,6 +2,10 @@
 pt-BR:
   models:
     doctor:
+      messages:
+        created: Dentista criado com sucesso
+        updated: Dentista atualizado com sucesso
+        destroyed: Dentista excluído com sucesso
       attributes:
         name: Nome
         expertise: Especialidade
