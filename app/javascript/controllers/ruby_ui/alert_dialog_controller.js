@@ -22,6 +22,13 @@ export default class extends Controller {
     document.body.classList.add("overflow-hidden");
   }
 
+  confirm(e) {
+    // allow scroll on body
+    document.body.classList.remove("overflow-hidden");
+    // remove the element
+    this.element.remove();
+  }
+
   dismiss(e) {
     // allow scroll on body
     document.body.classList.remove("overflow-hidden");

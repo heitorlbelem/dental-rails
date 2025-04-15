@@ -32,14 +32,13 @@ class DoctorsController < ApplicationController
     if @doctor.update(doctor_params)
       redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.updated") }
     else
-      render turbo_stream: turbo_stream.replace(:doctor_form,Views::Doctors::Edit.new(doctor: @doctor)), status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(:doctor_form, Views::Doctors::Edit.new(doctor: @doctor)), status: :unprocessable_entity
     end
   end
 
   def destroy
     @doctor.destroy!
-
-    redirect_to doctors_path, flash: { destructive: I18n.t("models.doctor.messages.destroyed") }
+    render turbo_stream: turbo_stream.remove(@doctor.id)
   end
 
   private

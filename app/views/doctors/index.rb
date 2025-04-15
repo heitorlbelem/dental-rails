@@ -32,8 +32,8 @@ module Views
             end
             TableBody do
               @doctors.each do |doctor|
-                TableRow do
-                  TableCell { Link(href: doctor_path(doctor), class: 'px-0') { doctor.name }  }
+                TableRow(id: doctor.id) do
+                  TableCell { Link(href: doctor_path(doctor), class: "px-0") { doctor.name }  }
                   TableCell { doctor.expertise }
                   TableCell { I18n.l(doctor.created_at) }
                   TableCell { I18n.l(doctor.updated_at) }
@@ -52,7 +52,13 @@ module Views
                         end
                         AlertDialogFooter do
                           AlertDialogCancel { "Cancel" }
-                          AlertDialogAction { "Continue" } # Will probably be a link to a controller action (e.g. delete account)
+                          AlertDialogAction do
+                            link_to(
+                              "Continue",
+                              doctor_path(doctor),
+                              data: { "turbo-method": :delete }
+                            )
+                          end
                         end
                       end
                     end

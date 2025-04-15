@@ -10,6 +10,9 @@ module RubyUI
 
     def default_attrs
       {
+        data: {
+          action: "click->ruby-ui--alert-dialog#confirm"
+        },
         variant: :primary
       }
     end
