@@ -18,6 +18,9 @@ export default class extends Controller {
 
   open(e) {
     if(e !== undefined) e.preventDefault()
+    // todo: check if the element is already open
+    document.querySelectorAll('div[data-controller="ruby-ui--dialog"]:not(#doctor_form')
+      .forEach(function (elem) { elem.remove() })
     document.body.insertAdjacentHTML('beforeend', this.contentTarget.innerHTML)
     // prevent scroll on body
     document.body.classList.add('overflow-hidden')

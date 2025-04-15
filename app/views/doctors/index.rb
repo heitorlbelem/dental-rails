@@ -25,6 +25,8 @@ module Views
               TableRow do
                 TableHead { "Nome" }
                 TableHead { "Expertise" }
+                TableHead { "Criado em" }
+                TableHead { "Atualizado em" }
                 TableHead(class: "text-right") {  }
               end
             end
@@ -33,6 +35,8 @@ module Views
                 TableRow do
                   TableCell { Link(href: doctor_path(doctor), class: 'px-0') { doctor.name }  }
                   TableCell { doctor.expertise }
+                  TableCell { I18n.l(doctor.created_at) }
+                  TableCell { I18n.l(doctor.updated_at) }
                   TableCell(class: "text-right") do
                     Link(href: edit_doctor_path(doctor), variant: :primary, data: { turbo_frame: "remote_modal" }) do
                       "Editar"

@@ -1,5 +1,5 @@
 class DoctorsController < ApplicationController
-  layout "modal", only: [ :new, :edit ]
+  layout "modal", only: %i[new edit create update]
   before_action :set_doctor, only: %i[ show edit update destroy ]
 
   def index
@@ -24,7 +24,7 @@ class DoctorsController < ApplicationController
     if @doctor.save
       redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.created") }
     else
-      render Views::Doctors::New.new(doctor: @doctor), status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(:doctor_form, Views::Doctors::New.new(doctor: @doctor)), status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class DoctorsController < ApplicationController
     if @doctor.update(doctor_params)
       redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.updated") }
     else
-      render Views::Doctors::Edit.new(doctor: @doctor), status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(:doctor_form,Views::Doctors::Edit.new(doctor: @doctor)), status: :unprocessable_entity
     end
   end
 

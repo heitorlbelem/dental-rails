@@ -10,7 +10,7 @@ module Views
       end
 
       def view_template
-        Dialog(open: true) do
+        Dialog(open: true, id: "doctor_form") do
           DialogContent do
             DialogHeader do
               DialogTitle { @title }
