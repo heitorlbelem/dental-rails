@@ -30,7 +30,7 @@ class DoctorsController < ApplicationController
 
   def update
     if @doctor.update(doctor_params)
-      redirect_to doctors_path, flash: { success: I18n.t("models.doctor.messages.updated") }
+      redirect_to doctors_path, flash: { warning: I18n.t("models.doctor.messages.updated") }
     else
       render turbo_stream: turbo_stream.replace(:doctor_form, Views::Doctors::Edit.new(doctor: @doctor)), status: :unprocessable_entity
     end

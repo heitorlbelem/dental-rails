@@ -35,4 +35,9 @@ export default class extends Controller {
     // remove the element
     this.element.remove();
   }
+
+  submit(e) {
+    e.preventDefault();
+    console.log(e.target);
+  }
 }
